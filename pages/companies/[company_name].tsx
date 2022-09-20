@@ -1,10 +1,10 @@
-import { supabase } from '../../utils/supabaseClient';
-import { v4 as uuid } from 'uuid';
-import { Container, Divider, Heading, Highlight, Text } from '@chakra-ui/react';
-import { ICompany } from '../../types';
-import { ProductsTable } from '../../components/ProductsTable';
-import { AddProduct } from '../../components/AddProduct';
 import { useMemo } from 'react';
+import { v4 as uuid } from 'uuid';
+import { Container, Heading, Text } from '@chakra-ui/react';
+import { ProductsTable } from '@components/ProductsTable';
+import { AddProduct } from '@components/AddProduct';
+import { supabase } from '@utils/supabaseClient';
+import { ICompany } from '@types';
 
 const Company: React.FC<ICompany> = props => {
   const categories = useMemo(() => props.products.map(p => p.category), [props.products]);
@@ -21,10 +21,8 @@ const Company: React.FC<ICompany> = props => {
           סוכן: {contact.contact_name} - {contact.contact_phone}
         </Text>
       ))}
-      
 
       <ProductsTable products={props.products} />
-
 
       <AddProduct company_id={props.company_id} categories={categories} />
     </Container>

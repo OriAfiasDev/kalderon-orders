@@ -1,7 +1,7 @@
-import { Button, Center, Input, Table, Tbody, Td, Tfoot, Thead, Tr } from '@chakra-ui/react';
-import Router, { useRouter } from 'next/router';
 import React, { useCallback, useMemo } from 'react';
-import { IProduct } from '../types';
+import Router, { useRouter } from 'next/router';
+import { Button, Center, Input, Table, Tbody, Td, Thead, Tr } from '@chakra-ui/react';
+import { IProduct } from '@types';
 
 interface ProductTableProps {
   products: IProduct[];

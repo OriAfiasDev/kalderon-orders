@@ -1,8 +1,8 @@
-import { Button, Container, Heading, Input, Select } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
-import { IProduct, ICategory } from '../types';
 import { v4 as uuid } from 'uuid';
-import { supabase } from '../utils/supabaseClient';
+import { Button, Container, Heading, Input, Select } from '@chakra-ui/react';
+import { supabase } from '@utils/supabaseClient';
+import { ICategory } from '@types';
 
 interface AddProductProps {
   company_id: string;
