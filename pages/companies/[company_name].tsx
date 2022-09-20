@@ -3,10 +3,17 @@ import { Container, Heading, Text } from '@chakra-ui/react';
 import { ProductsTable } from '@components/ProductsTable';
 import { AddProduct } from '@components/AddProduct';
 import { supabase } from '@utils/supabaseClient';
-import { ICompany } from '@types';
+import { ICategory, ICompany } from '@types';
 
 const Company: React.FC<ICompany> = props => {
-  const categories = useMemo(() => props.products.map(p => p.category), [props.products]);
+  const categories = useMemo(() => {
+    const categories: { [c_id: string]: ICategory } = {};
+
+    props.products.forEach(p => {
+      categories[p.category.category_id] = p.category;
+    });
+    return categories;
+  }, [props.products]);
 
   return (
     <Container>
