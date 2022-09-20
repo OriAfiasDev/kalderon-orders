@@ -7,7 +7,7 @@ export interface IProduct {
   product_price: number;
 }
 
-interface ICategory {
+export interface ICategory {
   category_id: string;
   category_name: string;
 }
