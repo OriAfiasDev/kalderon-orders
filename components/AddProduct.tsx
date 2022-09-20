@@ -14,8 +14,6 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categories }
   const [productCategoryId, setProductCategoryId] = useState<string>(categories[0].category_id);
   const [productPrice, setProductPrice] = useState<number>(0);
 
-  console.log(categories);
-
   const handleAdd = useCallback(async () => {
     const product = {
       product_id: uuid(),

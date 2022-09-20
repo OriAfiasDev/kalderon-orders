@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { v4 as uuid } from 'uuid';
 import { Container, Heading, Text } from '@chakra-ui/react';
 import { ProductsTable } from '@components/ProductsTable';
 import { AddProduct } from '@components/AddProduct';
@@ -8,8 +7,6 @@ import { ICompany } from '@types';
 
 const Company: React.FC<ICompany> = props => {
   const categories = useMemo(() => props.products.map(p => p.category), [props.products]);
-  console.log(props);
-  // console.log(uuid());
 
   return (
     <Container>
