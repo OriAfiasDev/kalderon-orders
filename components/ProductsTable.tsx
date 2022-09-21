@@ -8,12 +8,21 @@ interface ProductTableProps {
   contact: IContact;
 }
 
-const updateQuantities = async (products: IProduct[]) => {
-  const res = await fetch(`http://127.0.0.1:3000/api/products/quantities`, {
+const updateQuantities = async (products: IProduct[], type: 'order' | 'current' = 'current') => {
+  const res = await fetch(`http://127.0.0.1:3000/api/products/quantities/${type}`, {
     method: 'POST',
     body: JSON.stringify({ products }),
   });
   console.log(res);
+};
+
+const getWhatsappLink = (contact: IContact, products: IProduct[]) => {
+  const productsString = products
+    .filter(p => p.order_quantity > 0)
+    .map(p => `${p.product_name} - ${p.order_quantity}`)
+    .join('%0a');
+
+  return `https://wa.me/${contact.contact_phone}?text=${productsString}`;
 };
 
 export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }) => {
@@ -27,18 +36,21 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }
   };
 
   const sendOrder = useCallback(() => {
-    const text = updatedProducts
-      .filter(p => p.order_quantity > 0)
-      .map(p => `${p.product_name} - ${p.order_quantity}`)
-      .join('%0a');
-    router.push(`https://wa.me/${contact.contact_phone}?text=${text}`, '_blank');
-  }, [updatedProducts, router, contact.contact_phone]);
+    updateQuantities(updatedProducts, 'order');
+    window.open(getWhatsappLink(contact, updatedProducts), '_ blank');
+  }, [updatedProducts, contact]);
 
   const clearQuantities = useCallback(() => {
-    const emptyQuantities = products.map(p => ({ ...p, current_quantity: 0 }));
+    const emptyQuantities = updatedProducts.map(p => ({ ...p, current_quantity: 0 }));
     setUpdatedProducts(emptyQuantities);
     updateQuantities(emptyQuantities);
-  }, [products]);
+  }, [updatedProducts]);
+
+  const clearOrder = useCallback(() => {
+    const emptyQuantities = updatedProducts.map(p => ({ ...p, order_quantity: 0 }));
+    setUpdatedProducts(emptyQuantities);
+    updateQuantities(emptyQuantities, 'order');
+  }, [updatedProducts]);
 
   return (
     <>
@@ -77,17 +89,21 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }
         </Tbody>
       </Table>
       <Center>
+        <Button onClick={() => updateQuantities(updatedProducts)} disabled={!canSave}>
+          שמור מלאי
+        </Button>
+        <Divider orientation='vertical' />
         <Button onClick={sendOrder} disabled={!canOrder}>
           שלח הזמנה ל{contact.contact_name}
         </Button>
       </Center>
       <Divider my='3' />
       <Center>
-        <Button variant='ghost' size='sm' onClick={() => updateQuantities(updatedProducts)} disabled={!canSave}>
-          שמור מלאי
-        </Button>
         <Button variant='ghost' size='sm' onClick={clearQuantities} disabled={!canSave}>
           אפס מלאי
+        </Button>
+        <Button variant='ghost' size='sm' onClick={clearOrder} disabled={!canSave}>
+          אפס הזמנה
         </Button>
       </Center>
     </>

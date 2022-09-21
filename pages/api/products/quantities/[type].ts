@@ -23,9 +23,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'POST') {
     const { products } = JSON.parse(req.body) as { products: IProduct[] };
+    const { type } = req.query;
+    console.log(type)
 
     const { status, statusText } = await supabase.from('products').upsert(
-      products.map(({ product_id, current_quantity }) => ({ product_id, current_quantity })),
+      products.map(({ product_id, current_quantity, order_quantity }) => type === 'order' ? ({product_id, order_quantity}) : ({ product_id, current_quantity })),
       { onConflict: 'product_id' }
     );
     console.log({ status, statusText });
