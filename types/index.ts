@@ -12,7 +12,7 @@ export interface ICategory {
   category_name: string;
 }
 
-interface IContact {
+export interface IContact {
   contact_id: string;
   contact_name: string;
   contact_phone: string;

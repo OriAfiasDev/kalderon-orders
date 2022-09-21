@@ -1,13 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
 import Router, { useRouter } from 'next/router';
 import { Button, Center, Input, Table, Tbody, Td, Thead, Tr } from '@chakra-ui/react';
-import { IProduct } from '@types';
+import { IContact, IProduct } from '@types';
 
 interface ProductTableProps {
   products: IProduct[];
+  contact: IContact;
 }
 
-export const ProductsTable: React.FC<ProductTableProps> = ({ products }) => {
+export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }) => {
   const router = useRouter();
   const [updatedProducts, setUpdatedProducts] = React.useState<IProduct[]>(products);
   const canOrder = useMemo(() => updatedProducts.some(product => product.order_quantity > 0), [updatedProducts]);
@@ -21,8 +22,8 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products }) => {
       .filter(p => p.order_quantity > 0)
       .map(p => `${p.product_name} - ${p.order_quantity}`)
       .join('%0a');
-    router.push(`https://wa.me/972542533533?text=${text}`, '_blank');
-  }, [updatedProducts, router]);
+    router.push(`https://wa.me/${contact.contact_phone}?text=${text}`, '_blank');
+  }, [updatedProducts, router, contact.contact_phone]);
 
   return (
     <>
@@ -62,7 +63,7 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products }) => {
       </Table>
       <Center>
         <Button color='teal.400' onClick={sendOrder} disabled={!canOrder}>
-          שלח הזמנה
+          שלח הזמנה ל{contact.contact_name}
         </Button>
       </Center>
     </>
