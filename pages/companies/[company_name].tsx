@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { Container, Heading, Text } from '@chakra-ui/react';
 import { ProductsTable } from '@components/ProductsTable';
 import { AddProduct } from '@components/AddProduct';
-import { supabase } from '@utils/supabaseClient';
 import { ICategory, ICompany } from '@types';
 
 const Company: React.FC<ICompany> = props => {
@@ -26,7 +25,7 @@ const Company: React.FC<ICompany> = props => {
         </Text>
       ))}
 
-      <ProductsTable products={props.products} />
+      <ProductsTable products={props.products} contact={props.contacts[0]} />
 
       <AddProduct company_id={props.company_id} categories={categories} />
     </Container>
@@ -36,17 +35,10 @@ const Company: React.FC<ICompany> = props => {
 export async function getServerSideProps(context: any) {
   const { company_name } = context.params;
 
-  const data = await supabase
-    .from('companies')
-    .select(
-      `*,products: products!company_id(product_id,product_name,product_price,order_quantity,current_quantity,category: category_id(*)),contacts: contacts!company_id(contact_id, contact_name, contact_phone)`
-    )
-    .match({ company_name })
-    .single();
+  const res = await fetch(`http://127.0.0.1:3000/api/companies/${company_name}`);
+  const props = await res.json();
 
-  return {
-    props: data.data,
-  };
+  return { props };
 }
 
 export default Company;
