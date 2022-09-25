@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import {
-  Box,
   Button,
   Divider,
   Drawer,
@@ -9,9 +8,7 @@ import {
   DrawerFooter,
   DrawerOverlay,
   Input,
-  Link,
   List,
-  ListIcon,
   ListItem,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -28,8 +25,16 @@ export const DrawerExample: React.FC<DrawerProps> = ({ companyNames }) => {
 
   return (
     <>
-      <Button colorScheme='teal' onClick={onOpen}>
-        Open
+      <Button
+        onClick={onOpen}
+        colorScheme={'green'}
+        bg={'green.400'}
+        rounded={'full'}
+        px={6}
+        _hover={{
+          bg: 'green.500',
+        }}>
+        פתח תפריט
       </Button>
       <Drawer isOpen={isOpen} placement='right' onClose={onClose}>
         <DrawerOverlay />
@@ -55,7 +60,9 @@ export const DrawerExample: React.FC<DrawerProps> = ({ companyNames }) => {
               ביטול
             </Button>
             <Divider orientation='vertical' w='3' />
-            <Button colorScheme='blue'>הוסף חברה</Button>
+            <Button bg='green.400' colorScheme='green'>
+              הוסף חברה
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
