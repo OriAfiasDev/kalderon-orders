@@ -1,10 +1,19 @@
 import { DrawerExample } from '@components/Drawer';
+import { convertNumToDay } from '@utils/conversions';
+import { supabase } from '@utils/supabaseClient';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useMemo } from 'react';
 import styles from '../styles/Home.module.css';
 
-const Home: NextPage = () => {
+interface HomeProps {
+  todayOrders: { company_name: string; company_id: string }[];
+}
+
+const Home: NextPage<HomeProps> = ({ todayOrders }) => {
+  const today = useMemo(() => convertNumToDay(new Date().getDay(), 'long'), []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -19,6 +28,11 @@ const Home: NextPage = () => {
         </h1>
         <DrawerExample companyNames={['קוקה קולה', 'ביסקוטי']} />
 
+        <h1>היום יום {today}</h1>
+        <h2>אתה צריך להזמין</h2>
+        {todayOrders.map(({ company_id, company_name }) => (
+          <p key={company_id}>{company_name}</p>
+        ))}
 
         <p className={styles.description}>
           Get started by editing <code className={styles.code}>pages/index.tsx</code>
@@ -63,5 +77,12 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context: any) {
+  const res = await fetch(`http://127.0.0.1:3000/api/today`);
+  const props = await res.json();
+
+  return { props };
+}
 
 export default Home;
