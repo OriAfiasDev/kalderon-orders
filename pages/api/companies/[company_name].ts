@@ -13,5 +13,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     .match({ company_name })
     .single();
 
-  res.status(status).json(data.data);
+  res.status(status).json(data);
 }
