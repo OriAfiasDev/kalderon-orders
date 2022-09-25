@@ -1,4 +1,4 @@
-export const convertNumToDay = (num: number) => {
+export const convertNumToDay1 = (num: number) => {
   switch (num) {
     case 0:
       return 'ראשון';
@@ -18,3 +18,12 @@ export const convertNumToDay = (num: number) => {
       return 'Invalid day';
   }
 };
+
+export const convertNumToDay = (num: number, type: 'short' | 'long' = 'long') => {
+  const days = { 
+    short: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'],
+    long: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת']
+  }
+
+  return days[type][num];
+}
