@@ -3,6 +3,8 @@ import { Container, Heading, Text } from '@chakra-ui/react';
 import { ProductsTable } from '@components/ProductsTable';
 import { AddProduct } from '@components/AddProduct';
 import { ICategory, ICompany } from '@types';
+import { GetServerSideProps } from 'next';
+import axios from 'axios';
 
 const Company: React.FC<ICompany> = props => {
   const categories = useMemo(() => {
@@ -32,13 +34,14 @@ const Company: React.FC<ICompany> = props => {
   );
 };
 
-export async function getServerSideProps(context: any) {
-  const { company_name } = context.params;
+export const getServerSideProps: GetServerSideProps = async context => {
+  const company_name = context.params?.company_name as string;
+  const { host } = context.req.headers;
+  const newHost = host?.includes('http') ? host : `http://${host}`;
 
-  const res = await fetch(`https://kalderon-orders.vercel.app/api/companies/${company_name}`);
-  const props = await res.json();
+  const { data: props } = await axios.get(`${newHost}/api/companies/${company_name}`);
 
   return { props };
-}
+};
 
 export default Company;

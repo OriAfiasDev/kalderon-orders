@@ -21,6 +21,7 @@ export interface IContact {
 export interface ICompany {
   company_id: string;
   company_name: string;
+  company_name_english: string;
   preferred_days: number[];
   products: IProduct[];
   contacts: IContact[];
@@ -29,5 +30,6 @@ export interface ICompany {
 export type ICompanySmall = {
   company_id: string;
   company_name: string;
+  company_name_english: string;
   preferred_days: number[];
 }

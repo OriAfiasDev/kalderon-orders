@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import axios from 'axios';
 import Router, { useRouter } from 'next/router';
 import { Button, Center, Divider, Input, Table, Tbody, Td, Thead, Tr } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
@@ -9,7 +10,7 @@ interface ProductTableProps {
 }
 
 const updateQuantities = async (products: IProduct[], type: 'order' | 'current' = 'current') => {
-  const res = await fetch(`https://kalderon-orders.vercel.app/api/products/quantities/${type}`, {
+  const res = await axios.post(`${window.location.origin}/api/products/quantities/${type}`, {
     method: 'POST',
     body: JSON.stringify({ products }),
   });

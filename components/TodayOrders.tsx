@@ -26,8 +26,10 @@ export const TodayOrders: React.FC<TodayOrdersProps> = ({ todayOrders }) => {
       </Heading>
 
       <Text color={'gray.500'}>{text}</Text>
-      {todayOrders.map(({company_name, company_id}) => (
-        <Link href={`/companies/${company_name}`} key={company_id}>{company_name}</Link>
+      {todayOrders.map(({ company_name, company_id, company_name_english }) => (
+        <Link href={`/companies/${company_name_english}`} key={company_id}>
+          {company_name}
+        </Link>
       ))}
     </Box>
   );

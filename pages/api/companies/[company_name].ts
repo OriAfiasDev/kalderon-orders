@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     .select(
       `*,products: products!company_id(product_id,product_name,product_price,order_quantity,current_quantity,category: category_id(*)),contacts: contacts!company_id(contact_id, contact_name, contact_phone)`
     )
-    .match({ company_name })
+    .match({ company_name_english: company_name })
     .single();
 
   res.status(status).json(data);

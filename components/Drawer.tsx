@@ -13,15 +13,16 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { ICompanySmall } from '@types';
 
 interface DrawerProps {
-  companyNames: string[];
+  allCompanies: ICompanySmall[];
 }
 
-export const DrawerExample: React.FC<DrawerProps> = ({ companyNames }) => {
+export const DrawerExample: React.FC<DrawerProps> = ({ allCompanies }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = React.useState('');
-  const filteredCompanies = useMemo(() => companyNames.filter(company => company.includes(search)), [companyNames, search]);
+  const filteredCompanies = useMemo(() => allCompanies.filter(company => company.company_name.includes(search)), [allCompanies, search]);
 
   return (
     <>
@@ -42,9 +43,9 @@ export const DrawerExample: React.FC<DrawerProps> = ({ companyNames }) => {
           <DrawerBody>
             <Input placeholder='חפש חברה' value={search} onChange={e => setSearch(e.target.value)} size='sm' />
             <List spacing={3}>
-              {filteredCompanies.map(name => (
-                <ListItem key={name}>
-                  <NextLink href={`/companies/${name}`}>{name}</NextLink>
+              {filteredCompanies.map(company => (
+                <ListItem key={company.company_id}>
+                  <NextLink href={`/companies/${company.company_name_english}`}>{company.company_name}</NextLink>
                 </ListItem>
               ))}
             </List>
