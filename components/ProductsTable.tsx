@@ -9,7 +9,7 @@ interface ProductTableProps {
 }
 
 const updateQuantities = async (products: IProduct[], type: 'order' | 'current' = 'current') => {
-  const res = await fetch(`http://127.0.0.1:3000/api/products/quantities/${type}`, {
+  const res = await fetch(`https://kalderon-orders.vercel.app/api/products/quantities/${type}`, {
     method: 'POST',
     body: JSON.stringify({ products }),
   });

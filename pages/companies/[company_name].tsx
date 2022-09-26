@@ -35,7 +35,7 @@ const Company: React.FC<ICompany> = props => {
 export async function getServerSideProps(context: any) {
   const { company_name } = context.params;
 
-  const res = await fetch(`http://127.0.0.1:3000/api/companies/${company_name}`);
+  const res = await fetch(`https://kalderon-orders.vercel.app/api/companies/${company_name}`);
   const props = await res.json();
 
   return { props };

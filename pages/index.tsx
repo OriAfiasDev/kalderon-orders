@@ -28,10 +28,10 @@ const Home: NextPage<HomeProps> = ({ todayOrders, companyNames }) => (
 );
 
 export async function getServerSideProps() {
-  const today = await fetch(`http://127.0.0.1:3000/api/today`);
+  const today = await fetch(`https://kalderon-orders.vercel.app/api/today`);
   const todayOrders = await today.json();
 
-  const allCompanies = await fetch(`http://127.0.0.1:3000/api/companies`);
+  const allCompanies = await fetch(`https://kalderon-orders.vercel.app/api/companies`);
   const companyNames = (await allCompanies.json()).map((c: ICompany) => c.company_name);
 
   const props = { ...todayOrders, companyNames };
