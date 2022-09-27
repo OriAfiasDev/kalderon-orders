@@ -5,7 +5,6 @@ import {
   Drawer,
   DrawerBody,
   DrawerContent,
-  DrawerFooter,
   DrawerOverlay,
   Input,
   List,
@@ -14,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { ICompanySmall } from '@types';
+import { AddCompany } from './AddCompany';
 
 interface DrawerProps {
   allCompanies: ICompanySmall[];
@@ -52,19 +52,7 @@ export const DrawerExample: React.FC<DrawerProps> = ({ allCompanies }) => {
           </DrawerBody>
 
           <Divider h='3' />
-          {/* TODO: add company logic */}
-          <DrawerFooter>
-            <Input placeholder='הוסף חברה' value={search} onChange={e => setSearch(e.target.value)} size='sm' />
-          </DrawerFooter>
-          <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={onClose}>
-              ביטול
-            </Button>
-            <Divider orientation='vertical' w='3' />
-            <Button bg='green.400' colorScheme='green'>
-              הוסף חברה
-            </Button>
-          </DrawerFooter>
+          <AddCompany />
         </DrawerContent>
       </Drawer>
     </>
