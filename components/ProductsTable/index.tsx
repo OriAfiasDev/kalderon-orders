@@ -65,7 +65,7 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }
           </Tbody>
         </Table>
       </TableContainer>
-      <TableActions contact={contact} updatedProducts={updatedProducts} setUpdatedProducts={setUpdatedProducts} />
+      {contact && <TableActions contact={contact} updatedProducts={updatedProducts} setUpdatedProducts={setUpdatedProducts} />}
     </>
   );
 };
