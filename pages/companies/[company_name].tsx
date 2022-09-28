@@ -7,16 +7,10 @@ import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import { AddContact } from '@components/AddContact';
 import { AddCategory } from '@components/ProductsTable/AddCategory';
+import { arrayToMap } from '@utils/conversions';
 
 const Company: React.FC<ICompany> = props => {
-  const categories = useMemo(() => {
-    const categories: { [c_id: string]: ICategory } = {};
-
-    props.products.forEach(p => {
-      categories[p.category.category_id] = p.category;
-    });
-    return categories;
-  }, [props.products]);
+  const categoriesMap = useMemo(() => arrayToMap(props.categories, 'category_id'), [props.categories]);
 
   return (
     <Container>
@@ -46,7 +40,7 @@ const Company: React.FC<ICompany> = props => {
             <Divider />
             <AddCategory company_id={props.company_id} />
             <Divider />
-            <AddProduct company_id={props.company_id} categories={categories} />
+            <AddProduct company_id={props.company_id} categoriesMap={categoriesMap} />
           </TabPanel>
         </TabPanels>
       </Tabs>

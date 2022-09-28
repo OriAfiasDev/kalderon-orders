@@ -42,3 +42,10 @@ export const hebToEnglish = (heb: string) => {
     .map(letter => (letter in hebToEng ? hebToEng[letter] : ''))
     .join('');
 };
+
+export const arrayToMap = <T>(array: T[], key: string): { [key: string]: T } => {
+  const map: { [id: string]: T } = {};
+  
+  array.forEach(item => (map[item[key as keyof T] as string] = item));
+  return map;
+}

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { Button, Container, Heading, Input, Select } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
@@ -6,10 +6,10 @@ import { ICategory } from '@types';
 
 interface AddProductProps {
   company_id: string;
-  categories: { [category_id: string]: ICategory };
+  categoriesMap: { [category_id: string]: ICategory };
 }
 
-export const AddProduct: React.FC<AddProductProps> = ({ company_id, categories }) => {
+export const AddProduct: React.FC<AddProductProps> = ({ company_id, categoriesMap }) => {
   const [productName, setProductName] = useState<string>('');
   const [productCategoryId, setProductCategoryId] = useState<string>('');
   const [productPrice, setProductPrice] = useState<number>(0);
@@ -26,6 +26,8 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categories }
     };
 
     await supabase.from('products').insert(product);
+    setProductName('');
+    setProductPrice(0);
   }, [productCategoryId, productName, productPrice, company_id]);
 
   return (
@@ -41,9 +43,9 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categories }
         placeholder='בחר קטגוריה'
         value={productCategoryId}
         onChange={e => setProductCategoryId(e.target.value)}>
-        {Object.keys(categories).map(c => (
-          <option key={categories[c].category_id} value={categories[c].category_id}>
-            {categories[c].category_name}
+        {Object.keys(categoriesMap).map(c => (
+          <option key={categoriesMap[c].category_id} value={categoriesMap[c].category_id}>
+            {categoriesMap[c].category_name}
           </option>
         ))}
       </Select>
