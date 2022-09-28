@@ -4,11 +4,13 @@ import axios from 'axios';
 import { convertDayToNum, days, hebToEnglish } from '@utils/conversions';
 import { v4 as uuid } from 'uuid';
 import { useToast } from '@chakra-ui/react';
+import { useRefresh } from './hooks/useRefresh';
 
 export const AddCompany: React.FC = () => {
   const [companyName, setCompanyName] = useState('');
   const [preferredDays, setPreferredDays] = useState<string[]>([]);
   const toast = useToast();
+  const refresh = useRefresh();
 
   const onPreferredDaysChanged = useCallback((preferredDay: string) => {
     setPreferredDays(preferredDays =>
@@ -32,6 +34,7 @@ export const AddCompany: React.FC = () => {
 
       setCompanyName('');
       setPreferredDays([]);
+      refresh();
       toast({
         title: 'החברה נוספה בהצלחה',
         status: 'success',
@@ -46,7 +49,7 @@ export const AddCompany: React.FC = () => {
         isClosable: true,
       });
     }
-  }, [companyName, preferredDays, toast]);
+  }, [companyName, preferredDays, toast, refresh]);
 
   return (
     <>

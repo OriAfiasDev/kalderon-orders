@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { Button, Container, Heading, Input, Select } from '@chakra-ui/react';
 import { supabase } from '@utils/supabaseClient';
 import { ICategory } from '@types';
+import { useRefresh } from './hooks/useRefresh';
 
 interface AddProductProps {
   company_id: string;
@@ -13,6 +14,7 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categoriesMa
   const [productName, setProductName] = useState<string>('');
   const [productCategoryId, setProductCategoryId] = useState<string>('');
   const [productPrice, setProductPrice] = useState<number>(0);
+  const refresh = useRefresh();
 
   const handleAdd = useCallback(async () => {
     const product = {
@@ -25,10 +27,13 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categoriesMa
       company_id: company_id,
     };
 
-    await supabase.from('products').insert(product);
-    setProductName('');
-    setProductPrice(0);
-  }, [productCategoryId, productName, productPrice, company_id]);
+    const { status } = await supabase.from('products').insert(product);
+    if (status < 300) {
+      setProductName('');
+      setProductPrice(0);
+      refresh();
+    }
+  }, [productCategoryId, productName, productPrice, company_id, refresh]);
 
   return (
     <Container my='2' dir='rtl'>

@@ -3,6 +3,7 @@ import { IContact } from '@types';
 import { supabase } from '@utils/supabaseClient';
 import { useCallback, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { useRefresh } from './hooks/useRefresh';
 
 interface AddContactProps {
   company_id: string;
@@ -11,6 +12,7 @@ interface AddContactProps {
 export const AddContact: React.FC<AddContactProps> = ({ company_id }) => {
   const [contactName, setContactName] = useState<string>('');
   const [contactPhone, setContactPhone] = useState<string>('');
+  const refresh = useRefresh();
 
   const handleAdd = useCallback(async () => {
     const contact: IContact = {
@@ -20,8 +22,13 @@ export const AddContact: React.FC<AddContactProps> = ({ company_id }) => {
       company_id,
     };
 
-    await supabase.from('contacts').insert(contact);
-  }, [contactName, contactPhone, company_id]);
+    const { status } = await supabase.from('contacts').insert(contact);
+    if (status < 300) {
+      setContactName('');
+      setContactPhone('');
+      refresh();
+    }
+  }, [contactName, contactPhone, company_id, refresh]);
 
   return (
     <Container my='2' dir='rtl'>

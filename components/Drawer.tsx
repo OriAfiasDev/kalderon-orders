@@ -1,16 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  Button,
-  Divider,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-  Input,
-  List,
-  ListItem,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Button, Divider, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Input, List, ListItem, useDisclosure } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { ICompanySmall } from '@types';
 import { AddCompany } from './AddCompany';
