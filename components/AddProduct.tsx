@@ -30,17 +30,26 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categories }
 
   return (
     <Container my='2' dir='rtl'>
-      <Heading fontSize='larger' mb='2'>הוסף פריט</Heading>
+      <Heading fontSize='larger' mb='2'>
+        הוסף פריט
+      </Heading>
       <Input mb='1' placeholder='שם מוצר' value={productName} onChange={e => setProductName(e.target.value)} />
       <Input mb='1' placeholder='מחיר' value={productPrice} onChange={e => setProductPrice(Number(e.target.value))} />
-      <Select mb='1' placeholder='בחר קטגוריה' value={productCategoryId} onChange={e => setProductCategoryId(e.target.value)}>
+      <Select
+        variant='flushed'
+        mb='1'
+        placeholder='בחר קטגוריה'
+        value={productCategoryId}
+        onChange={e => setProductCategoryId(e.target.value)}>
         {Object.keys(categories).map(c => (
           <option key={categories[c].category_id} value={categories[c].category_id}>
             {categories[c].category_name}
           </option>
         ))}
       </Select>
-      <Button onClick={handleAdd} w='100%'>הוסף מוצר</Button>
+      <Button onClick={handleAdd} w='100%'>
+        הוסף מוצר
+      </Button>
     </Container>
   );
 };
