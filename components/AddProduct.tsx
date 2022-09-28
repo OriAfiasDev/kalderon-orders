@@ -29,18 +29,18 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categories }
   }, [productCategoryId, productName, productPrice, company_id]);
 
   return (
-    <Container mt='10' dir='rtl'>
-      <Heading fontSize='larger'>הוסף פריט</Heading>
-      <Input placeholder='שם מוצר' value={productName} onChange={e => setProductName(e.target.value)} />
-      <Input placeholder='מחיר' value={productPrice} onChange={e => setProductPrice(Number(e.target.value))} />
-      <Select placeholder='בחר קטגוריה' value={productCategoryId} onChange={e => setProductCategoryId(e.target.value)}>
+    <Container my='2' dir='rtl'>
+      <Heading fontSize='larger' mb='2'>הוסף פריט</Heading>
+      <Input mb='1' placeholder='שם מוצר' value={productName} onChange={e => setProductName(e.target.value)} />
+      <Input mb='1' placeholder='מחיר' value={productPrice} onChange={e => setProductPrice(Number(e.target.value))} />
+      <Select mb='1' placeholder='בחר קטגוריה' value={productCategoryId} onChange={e => setProductCategoryId(e.target.value)}>
         {Object.keys(categories).map(c => (
           <option key={categories[c].category_id} value={categories[c].category_id}>
             {categories[c].category_name}
           </option>
         ))}
       </Select>
-      <Button onClick={handleAdd}>הוסף מוצר</Button>
+      <Button onClick={handleAdd} w='100%'>הוסף מוצר</Button>
     </Container>
   );
 };
