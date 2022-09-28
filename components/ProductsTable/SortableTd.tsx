@@ -1,6 +1,5 @@
 import { Td } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
-import { SortKey } from '.';
 
 interface SortableTdProps extends PropsWithChildren {
   isActiveSort: boolean;

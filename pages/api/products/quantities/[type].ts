@@ -22,15 +22,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await runMiddleware(req, res, cors);
 
   if (req.method === 'POST') {
-    const { products } = JSON.parse(req.body) as { products: IProduct[] };
+    const { products } = req.body as { products: IProduct[] };
     const { type } = req.query;
-    console.log(type)
 
-    const { status, statusText } = await supabase.from('products').upsert(
-      products.map(({ product_id, current_quantity, order_quantity }) => type === 'order' ? ({product_id, order_quantity}) : ({ product_id, current_quantity })),
-      { onConflict: 'product_id' }
+    const productsToUpdate = products.map(({ product_id, current_quantity, order_quantity }) =>
+      type === 'order' ? { product_id, order_quantity } : { product_id, current_quantity }
     );
-    console.log({ status, statusText });
+
+    const { status, statusText } = await supabase.from('products').upsert(productsToUpdate, { onConflict: 'product_id' });
 
     res.status(status).json({ statusText });
   }
