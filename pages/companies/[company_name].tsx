@@ -9,13 +9,14 @@ import { AddContact } from '@components/AddContact';
 import { AddCategory } from '@components/ProductsTable/AddCategory';
 import { arrayToMap } from '@utils/conversions';
 
-const Company: React.FC<ICompany> = props => {
-  const categoriesMap = useMemo(() => arrayToMap(props.categories, 'category_id'), [props.categories]);
+const Company: React.FC<ICompany> = ({ products, categories, company_name, contacts, company_id }) => {
+  const categoriesMap = useMemo(() => arrayToMap(categories, 'category_id'), [categories]);
 
+  console.log({ products });
   return (
     <Container>
       <Heading textAlign='center' color='teal.500'>
-        {props.company_name}
+        {company_name}
       </Heading>
 
       <Tabs isFitted variant='enclosed' dir='rtl' mt='2'>
@@ -26,21 +27,21 @@ const Company: React.FC<ICompany> = props => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <ProductsTable products={props.products} contact={props.contacts[0]} />
+            <ProductsTable products={products} contact={contacts[0]} />
           </TabPanel>
           <TabPanel>
-            {props.contacts.map(contact => (
+            {contacts.map(contact => (
               <Text textAlign='center' fontSize='xl' key={contact.contact_id}>
                 סוכן: {contact.contact_name} - {contact.contact_phone}
               </Text>
             ))}
           </TabPanel>
           <TabPanel>
-            <AddContact company_id={props.company_id} />
+            <AddContact company_id={company_id} />
             <Divider />
-            <AddCategory company_id={props.company_id} />
+            <AddCategory company_id={company_id} />
             <Divider />
-            <AddProduct company_id={props.company_id} categoriesMap={categoriesMap} />
+            <AddProduct company_id={company_id} categoriesMap={categoriesMap} />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Table, TableContainer, Tbody, Td, Thead, Tr } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
 import { SortableTd } from './SortableTd';
@@ -16,6 +16,10 @@ export type SortKey = 'category' | 'product_name' | 'current_quantity' | 'order_
 export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }) => {
   const [updatedProducts, setUpdatedProducts] = useState<IProduct[]>(products);
   const [sortKey, setSortKey] = useState<SortKey>('category');
+
+  useEffect(() => {
+    setUpdatedProducts(products);
+  }, [products]);
 
   const handleProductUpdate = (productId: string, field: keyof IProduct, value: any) => {
     setUpdatedProducts(prev => prev.map(p => (p.product_id === productId ? { ...p, [field]: value } : p)));
