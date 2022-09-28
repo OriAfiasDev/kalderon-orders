@@ -16,6 +16,7 @@ export interface IContact {
   contact_id: string;
   contact_name: string;
   contact_phone: string;
+  company_id: string;
 }
 
 export interface ICompany {
