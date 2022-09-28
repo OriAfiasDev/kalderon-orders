@@ -10,6 +10,7 @@ export interface IProduct {
 export interface ICategory {
   category_id: string;
   category_name: string;
+  company_id: string;
 }
 
 export interface IContact {
@@ -26,6 +27,7 @@ export interface ICompany {
   preferred_days: number[];
   products: IProduct[];
   contacts: IContact[];
+  categories: ICategory[];
 }
 
 export type ICompanySmall = {
