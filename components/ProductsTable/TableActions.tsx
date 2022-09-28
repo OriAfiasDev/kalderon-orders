@@ -1,7 +1,8 @@
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 import { Button, Center, Divider } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
-import axios from 'axios';
-import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import { getWhatsappLink } from './utils';
 
 interface TableActionsProps {
   updatedProducts: IProduct[];
@@ -9,39 +10,34 @@ interface TableActionsProps {
   contact: IContact;
 }
 
-const getWhatsappLink = (contact: IContact, products: IProduct[]) => {
-  const productsString = products
-    .filter(p => p.order_quantity > 0)
-    .map(p => `${p.product_name} - ${p.order_quantity}`)
-    .join('%0a');
-
-  return `https://wa.me/${contact.contact_phone}?text=${productsString}`;
-};
-
-const updateQuantities = async (products: IProduct[], type: 'order' | 'current' = 'current') => {
-  const res = await axios.post(`${window.location.origin}/api/products/quantities/${type}`, {
-    method: 'POST',
-    body: JSON.stringify({ products }),
-  });
-  console.log(res);
-};
-
 export const TableActions: React.FC<TableActionsProps> = ({ updatedProducts, contact, setUpdatedProducts }) => {
   const canOrder = useMemo(() => updatedProducts.some(product => product.order_quantity > 0), [updatedProducts]);
   const canSave = useMemo(() => updatedProducts.some(product => product.current_quantity > 0), [updatedProducts]);
+  const [origin, setOrigin] = useState('');
+
+  useEffect(() => {
+    setOrigin(window?.location.origin);
+  }, []);
+
+  const updateQuantities = useCallback(
+    async (products: IProduct[], type: 'order' | 'current' = 'current') => {
+      await axios.post(`${origin}/api/products/quantities/${type}`, { products });
+    },
+    [origin]
+  );
 
   const sendOrder = useCallback(() => {
     updateQuantities(updatedProducts, 'order');
     window.open(getWhatsappLink(contact, updatedProducts), '_ blank');
-  }, [updatedProducts, contact]);
+  }, [updatedProducts, contact, updateQuantities]);
 
   const clear = useCallback(
     (key: 'current_quantity' | 'order_quantity') => {
-      const claredQuantities = updatedProducts.map(p => ({ ...p, [key]: 0 }));
-      setUpdatedProducts(claredQuantities);
-      updateQuantities(claredQuantities, key === 'current_quantity' ? 'current' : 'order');
+      const clearedQuantities = updatedProducts.map(p => ({ ...p, [key]: 0 }));
+      setUpdatedProducts(clearedQuantities);
+      updateQuantities(clearedQuantities, key === 'current_quantity' ? 'current' : 'order');
     },
-    [updatedProducts, setUpdatedProducts]
+    [updatedProducts, setUpdatedProducts, updateQuantities]
   );
 
   return (

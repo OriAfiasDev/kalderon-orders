@@ -1,4 +1,4 @@
-import { IProduct } from '@types';
+import { IContact, IProduct } from '@types';
 import { SortKey } from '.';
 
 export const sortFunc = (a: IProduct, b: IProduct, sortKey: SortKey): number => {
@@ -12,3 +12,12 @@ export const sortFunc = (a: IProduct, b: IProduct, sortKey: SortKey): number => 
 
   return b[sortKey] - a[sortKey];
 };
+
+export const getWhatsappLink = (contact: IContact, products: IProduct[]) => {
+    const productsString = products
+      .filter(p => p.order_quantity > 0)
+      .map(p => `${p.product_name} - ${p.order_quantity}`)
+      .join('%0a');
+  
+    return `https://wa.me/${contact.contact_phone}?text=${productsString}`;
+  };
