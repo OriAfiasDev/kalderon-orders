@@ -24,7 +24,7 @@ const Company: React.FC<ICompany> = props => {
         {props.company_name}
       </Heading>
 
-      <Tabs isFitted variant='enclosed' dir='rtl'>
+      <Tabs isFitted variant='enclosed' dir='rtl' mt='2'>
         <TabList mb='1em'>
           <Tab>סוכנים</Tab>
           <Tab>הזמנה</Tab>
