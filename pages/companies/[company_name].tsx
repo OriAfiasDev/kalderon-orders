@@ -26,20 +26,20 @@ const Company: React.FC<ICompany> = props => {
 
       <Tabs isFitted variant='enclosed' dir='rtl' mt='2'>
         <TabList mb='1em'>
-          <Tab>סוכנים</Tab>
           <Tab>הזמנה</Tab>
+          <Tab>סוכנים</Tab>
           <Tab>עריכה</Tab>
         </TabList>
         <TabPanels>
+          <TabPanel>
+            <ProductsTable products={props.products} contact={props.contacts[0]} />
+          </TabPanel>
           <TabPanel>
             {props.contacts.map(contact => (
               <Text textAlign='center' fontSize='xl' key={contact.contact_id}>
                 סוכן: {contact.contact_name} - {contact.contact_phone}
               </Text>
             ))}
-          </TabPanel>
-          <TabPanel>
-            <ProductsTable products={props.products} contact={props.contacts[0]} />
           </TabPanel>
           <TabPanel>
             <AddContact company_id={props.company_id} />
