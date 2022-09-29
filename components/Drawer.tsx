@@ -45,7 +45,12 @@ export const Drawer: React.FC = () => {
         <DrawerOverlay />
         <DrawerContent dir='rtl'>
           <DrawerBody>
-            <Input placeholder='חפש חברה' value={search} onChange={e => setSearch(e.target.value)} size='sm' />
+            <NextLink href='/'>
+              <Button onClick={onClose} variant='ghost' w='100%'>
+                דף הבית
+              </Button>
+            </NextLink>
+            <Input placeholder='חפש חברה' mb='2' value={search} onChange={e => setSearch(e.target.value)} size='sm' />
             <List spacing={3}>
               {filteredCompanies.map(company => (
                 <ListItem key={company.company_id}>
