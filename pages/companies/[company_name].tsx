@@ -6,7 +6,7 @@ import { ICategory, ICompany } from '@types';
 import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import { AddContact } from '@components/AddContact';
-import { AddCategory } from '@components/ProductsTable/AddCategory';
+import { AddCategory } from '@components/AddCategory';
 import { arrayToMap } from '@utils/conversions';
 
 const Company: React.FC<ICompany> = ({ products, categories, company_name, contacts, company_id }) => {
