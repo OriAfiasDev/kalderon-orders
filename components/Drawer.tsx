@@ -6,9 +6,12 @@ import {
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
+  Flex,
   Input,
   List,
   ListItem,
+  Switch,
+  useColorMode,
   useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
@@ -19,6 +22,7 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
 
 export const Drawer: React.FC = () => {
+  const { toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = React.useState('');
   const [companies, setCompanies] = useState<ICompanySmall[]>([]);
@@ -40,7 +44,11 @@ export const Drawer: React.FC = () => {
 
   return (
     <>
-      <HamburgerIcon cursor='pointer' fontSize='3xl' m='2' onClick={onOpen} />
+      <Flex direction='row' justifyContent='space-between' px='4'>
+        <HamburgerIcon cursor='pointer' fontSize='3xl' m='2' onClick={onOpen} />
+        <Switch colorScheme='teal' onChange={toggleColorMode} />
+      </Flex>
+
       <ChakraDrawer isOpen={isOpen} placement='right' onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent dir='rtl'>
