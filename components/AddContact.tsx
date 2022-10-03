@@ -38,7 +38,7 @@ export const AddContact: React.FC<AddContactProps> = ({ company_id }) => {
       <Input mb='1' placeholder='שם איש קשר' value={contactName} onChange={e => setContactName(e.target.value)} />
       <Input mb='1' placeholder='טלפון' value={contactPhone} onChange={e => setContactPhone(e.target.value)} />
 
-      <Button onClick={handleAdd} w='100%'>
+      <Button onClick={handleAdd} w='100%' colorScheme='green'>
         הוסף איש קשר
       </Button>
     </Container>

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { Button, Center, Divider } from '@chakra-ui/react';
+import { Button, Center, Divider, Stack } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
 import { getWhatsappLink } from './utils';
 
@@ -41,25 +41,24 @@ export const TableActions: React.FC<TableActionsProps> = ({ updatedProducts, con
   );
 
   return (
-    <>
-      <Center>
-        <Button onClick={() => updateQuantities(updatedProducts)} disabled={!canSave}>
+    <Stack>
+      <Center mt='4'>
+        <Button colorScheme='green' onClick={() => updateQuantities(updatedProducts)} disabled={!canSave}>
           שמור מלאי
         </Button>
-        <Divider orientation='vertical' />
-        <Button onClick={sendOrder} disabled={!canOrder}>
-          שלח הזמנה ל{contact.contact_name}
+        <Divider orientation='vertical' w='3' />
+        <Button colorScheme='green' onClick={sendOrder} disabled={!canOrder}>
+          שלח הזמנה
         </Button>
       </Center>
-      <Divider my='3' />
       <Center>
-        <Button variant='ghost' size='sm' onClick={() => clear('current_quantity')} disabled={!canSave}>
+        <Button colorScheme='cyan' variant='ghost' size='sm' onClick={() => clear('current_quantity')} disabled={!canSave}>
           אפס מלאי
         </Button>
-        <Button variant='ghost' size='sm' onClick={() => clear('order_quantity')} disabled={!canSave}>
+        <Button colorScheme='cyan' variant='ghost' size='sm' onClick={() => clear('order_quantity')} disabled={!canSave}>
           אפס הזמנה
         </Button>
       </Center>
-    </>
+    </Stack>
   );
 };

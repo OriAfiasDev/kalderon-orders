@@ -68,7 +68,7 @@ export const AddCompany: React.FC = () => {
           ביטול
         </Button>
         <Divider orientation='vertical' w='3' />
-        <Button bg='green.400' colorScheme='green' onClick={onSubmit}>
+        <Button colorScheme='green' onClick={onSubmit}>
           הוסף חברה
         </Button>
       </DrawerFooter>

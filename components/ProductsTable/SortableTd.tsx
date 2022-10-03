@@ -7,7 +7,11 @@ interface SortableTdProps extends PropsWithChildren {
 }
 
 export const SortableTd: React.FC<SortableTdProps> = ({ isActiveSort, setActiveSort, children }) => (
-  <Td cursor='pointer' color={isActiveSort ? 'cyan.500' : 'blackAlpha.500'} onClick={setActiveSort}>
+  <Td
+    cursor='pointer'
+    fontWeight={isActiveSort ? 'extrabold' : 'normal'}
+    color={isActiveSort ? 'cyan.500' : undefined}
+    onClick={setActiveSort}>
     {children}
   </Td>
 );
