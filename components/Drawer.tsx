@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Button,
   Divider,
@@ -39,10 +39,13 @@ export const Drawer: React.FC = () => {
 
   const filteredCompanies = useMemo(() => companies.filter(company => company.company_name.includes(search)), [companies, search]);
 
-  const onClick = (route: string) => {
-    router.push(route);
-    onClose();
-  };
+  const onCompanyClicked = useCallback(
+    (route: string) => {
+      router.push(route);
+      onClose();
+    },
+    [onClose, router]
+  );
 
   return (
     <>
@@ -64,7 +67,7 @@ export const Drawer: React.FC = () => {
             <List spacing={3}>
               {filteredCompanies.map(company => (
                 <ListItem key={company.company_id}>
-                  <div onClick={() => onClick(`/companies/${company.company_name_english}`)}>{company.company_name}</div>
+                  <div onClick={() => onCompanyClicked(`/companies/${company.company_name_english}`)}>{company.company_name}</div>
                 </ListItem>
               ))}
             </List>
