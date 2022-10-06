@@ -1,6 +1,5 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
-import { Button, Center, Divider, Stack, Toast, useToast } from '@chakra-ui/react';
+import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import { Button, Center, Divider, Stack, useToast } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
 import { getWhatsappLink } from './utils';
 import { updateQuantities } from '@utils/api';
