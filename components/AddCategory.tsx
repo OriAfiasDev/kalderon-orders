@@ -1,8 +1,6 @@
 import { useCallback, useState } from 'react';
-import { v4 as uuid } from 'uuid';
-import { Button, Container, Heading, Input } from '@chakra-ui/react';
-import { supabase } from '@utils/supabaseClient';
-import { ICategory } from '@types';
+import { Button, Container, Heading, Input, useToast } from '@chakra-ui/react';
+import { createCategory } from '@utils/api';
 
 interface AddCategoryProps {
   company_id: string;
@@ -10,17 +8,19 @@ interface AddCategoryProps {
 
 export const AddCategory: React.FC<AddCategoryProps> = ({ company_id }) => {
   const [categoryName, setCategoryName] = useState<string>('');
+  const toast = useToast();
 
   const handleAdd = useCallback(async () => {
-    const product: ICategory = {
-      category_id: uuid(),
-      category_name: categoryName,
-      company_id,
-    };
+    const success = await createCategory(categoryName, company_id);
+    toast({
+      title: success ? 'קטגוריה נוספה בהצלחה' : 'לא הצלחנו להוסיף קטגוריה, אנא נסה שנית',
+      status: success ? 'success' : 'error',
+      duration: 9000,
+      isClosable: true,
+    });
 
-    await supabase.from('categories').insert(product);
     setCategoryName('');
-  }, [categoryName, company_id]);
+  }, [categoryName, company_id, toast]);
 
   return (
     <Container my='2' dir='rtl'>

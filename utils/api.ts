@@ -1,7 +1,9 @@
-import { ICompany, ICompanySmall, IProduct } from '@types';
+import { ICategory, ICompany, ICompanySmall, IProduct } from '@types';
 import { convertDayToNum, hebToEnglish } from './conversions';
 import { supabase } from './supabaseClient';
 import { v4 as uuid } from 'uuid';
+
+// Companies
 
 export const getCompanies = async (): Promise<ICompanySmall[]> => {
   const { data } = await supabase.from('companies').select(`*`);
@@ -45,6 +47,19 @@ export const getCompaniesByDay = async (day: number): Promise<ICompanySmall[]> =
     .contains('preferred_days', [day]);
 
   return data as ICompanySmall[];
+};
+
+//Categories
+
+export const createCategory = async (category_name: string, company_id: string): Promise<boolean> => {
+  if (!category_name) return false;
+  try {
+    const category: ICategory = { category_name, category_id: uuid(), company_id };
+    const { status } = await supabase.from('categories').insert(category);
+    return status < 300;
+  } catch {
+    return false;
+  }
 };
 
 export const updateQuantities = async (products: IProduct[], type: 'order' | 'current' = 'current'): Promise<boolean> => {
