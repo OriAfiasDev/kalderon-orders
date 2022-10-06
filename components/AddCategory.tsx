@@ -29,7 +29,7 @@ export const AddCategory: React.FC<AddCategoryProps> = ({ company_id }) => {
       </Heading>
       <Input mb='1' placeholder='שם קטגוריה' value={categoryName} onChange={e => setCategoryName(e.target.value)} />
 
-      <Button onClick={handleAdd} w='100%'>
+      <Button onClick={handleAdd} w='100%' colorScheme='green'>
         הוסף קטגוריה
       </Button>
     </Container>

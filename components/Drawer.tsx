@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Button,
   Divider,
@@ -6,10 +6,14 @@ import {
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
+  Flex,
   Input,
   List,
   ListItem,
+  Switch,
+  useColorMode,
   useDisclosure,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { ICompanySmall } from '@types';
@@ -19,10 +23,12 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
 
 export const Drawer: React.FC = () => {
+  const { toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = React.useState('');
   const [companies, setCompanies] = useState<ICompanySmall[]>([]);
   const router = useRouter();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     (async () => {
@@ -33,17 +39,24 @@ export const Drawer: React.FC = () => {
 
   const filteredCompanies = useMemo(() => companies.filter(company => company.company_name.includes(search)), [companies, search]);
 
-  const onClick = (route: string) => {
-    router.push(route);
-    onClose();
-  };
+  const onCompanyClicked = useCallback(
+    (route: string) => {
+      router.push(route);
+      onClose();
+    },
+    [onClose, router]
+  );
 
   return (
     <>
-      <HamburgerIcon cursor='pointer' fontSize='3xl' m='2' onClick={onOpen} />
-      <ChakraDrawer isOpen={isOpen} placement='right' onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent dir='rtl'>
+      <Flex direction='row' justifyContent='space-between' alignItems='center' px='4'>
+        <HamburgerIcon cursor='pointer' fontSize='3xl' m='2' onClick={onOpen} />
+        <Switch colorScheme='teal' onChange={toggleColorMode} />
+      </Flex>
+
+      <ChakraDrawer initialFocusRef={undefined} isOpen={isOpen} placement={isMobile ? 'bottom' : 'right'} onClose={onClose}>
+        <DrawerOverlay backdropFilter='blur(2px)' bgColor='transparent' />
+        <DrawerContent dir='rtl' borderTop={isMobile ? '4px solid teal' : ''} borderRadius={isMobile ? 10 : 0}>
           <DrawerBody>
             <NextLink href='/'>
               <Button onClick={onClose} variant='ghost' w='100%'>
@@ -54,7 +67,7 @@ export const Drawer: React.FC = () => {
             <List spacing={3}>
               {filteredCompanies.map(company => (
                 <ListItem key={company.company_id}>
-                  <div onClick={() => onClick(`/companies/${company.company_name_english}`)}>{company.company_name}</div>
+                  <div onClick={() => onCompanyClicked(`/companies/${company.company_name_english}`)}>{company.company_name}</div>
                 </ListItem>
               ))}
             </List>

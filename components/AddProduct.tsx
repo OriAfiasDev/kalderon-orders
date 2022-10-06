@@ -54,7 +54,7 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categoriesMa
           </option>
         ))}
       </Select>
-      <Button onClick={handleAdd} w='100%'>
+      <Button onClick={handleAdd} w='100%' colorScheme='green'>
         הוסף מוצר
       </Button>
     </Container>
