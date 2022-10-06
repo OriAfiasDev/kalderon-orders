@@ -1,9 +1,7 @@
 import { Box, Heading, Container, Text, Stack } from '@chakra-ui/react';
-import { Drawer } from '@components/Drawer';
 import { TodayOrders } from '@components/TodayOrders';
-import { ICompany, ICompanySmall } from '@types';
+import { ICompanySmall } from '@types';
 import { GetServerSideProps, NextPage } from 'next';
-import axios from 'axios';
 import { getCompaniesByDay } from '@utils/api';
 
 interface HomeProps {

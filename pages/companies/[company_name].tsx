@@ -2,13 +2,11 @@ import { useMemo } from 'react';
 import { Container, Divider, Heading, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import { ProductsTable } from '@components/ProductsTable';
 import { AddProduct } from '@components/AddProduct';
-import { ICategory, ICompany } from '@types';
+import { ICompany } from '@types';
 import { GetServerSideProps } from 'next';
-import axios from 'axios';
 import { AddContact } from '@components/AddContact';
 import { AddCategory } from '@components/AddCategory';
 import { arrayToMap } from '@utils/conversions';
-import { supabase } from '@utils/supabaseClient';
 import { getCompanyByEnglishName } from '@utils/api';
 
 const Company: React.FC<ICompany> = ({ products, categories, company_name, contacts, company_id }) => {

@@ -18,7 +18,6 @@ import {
 import NextLink from 'next/link';
 import { ICompanySmall } from '@types';
 import { AddCompany } from './AddCompany';
-import axios from 'axios';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
 import { getCompanies } from '@utils/api';
