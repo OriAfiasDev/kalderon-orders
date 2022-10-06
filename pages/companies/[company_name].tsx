@@ -2,12 +2,12 @@ import { useMemo } from 'react';
 import { Container, Divider, Heading, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import { ProductsTable } from '@components/ProductsTable';
 import { AddProduct } from '@components/AddProduct';
-import { ICategory, ICompany } from '@types';
+import { ICompany } from '@types';
 import { GetServerSideProps } from 'next';
-import axios from 'axios';
 import { AddContact } from '@components/AddContact';
 import { AddCategory } from '@components/AddCategory';
 import { arrayToMap } from '@utils/conversions';
+import { getCompanyByEnglishName } from '@utils/api';
 
 const Company: React.FC<ICompany> = ({ products, categories, company_name, contacts, company_id }) => {
   const categoriesMap = useMemo(() => arrayToMap(categories, 'category_id'), [categories]);
@@ -51,10 +51,8 @@ const Company: React.FC<ICompany> = ({ products, categories, company_name, conta
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const company_name = context.params?.company_name as string;
-  const { host } = context.req.headers;
-  const newHost = host?.includes('http') ? host : `http://${host}`;
 
-  const { data: props } = await axios.get(`${newHost}/api/companies/${company_name}`);
+  const props = getCompanyByEnglishName(company_name);
 
   return { props };
 };

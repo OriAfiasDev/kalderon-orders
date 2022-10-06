@@ -1,8 +1,6 @@
-import { Button, Container, Heading, Input } from '@chakra-ui/react';
-import { IContact } from '@types';
-import { supabase } from '@utils/supabaseClient';
+import { Button, Container, Heading, Input, useToast } from '@chakra-ui/react';
+import { createContact } from '@utils/api';
 import { useCallback, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { useRefresh } from './hooks/useRefresh';
 
 interface AddContactProps {
@@ -13,22 +11,22 @@ export const AddContact: React.FC<AddContactProps> = ({ company_id }) => {
   const [contactName, setContactName] = useState<string>('');
   const [contactPhone, setContactPhone] = useState<string>('');
   const refresh = useRefresh();
+  const toast = useToast();
 
   const handleAdd = useCallback(async () => {
-    const contact: IContact = {
-      contact_id: uuid(),
-      contact_name: contactName,
-      contact_phone: contactPhone,
-      company_id,
-    };
+    const success = await createContact(contactName, contactPhone, company_id);
 
-    const { status } = await supabase.from('contacts').insert(contact);
-    if (status < 300) {
-      setContactName('');
-      setContactPhone('');
-      refresh();
-    }
-  }, [contactName, contactPhone, company_id, refresh]);
+    toast({
+      title: success ? 'איש קשר נוסף בהצלחה' : 'איש קשר לא נוסף',
+      status: success ? 'success' : 'error',
+      isClosable: true,
+      duration: 9000,
+    });
+
+    setContactName('');
+    setContactPhone('');
+    refresh();
+  }, [contactName, contactPhone, company_id, refresh, toast]);
 
   return (
     <Container my='2' dir='rtl'>

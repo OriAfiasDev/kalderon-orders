@@ -1,9 +1,8 @@
 import { Box, Heading, Container, Text, Stack } from '@chakra-ui/react';
-import { Drawer } from '@components/Drawer';
 import { TodayOrders } from '@components/TodayOrders';
-import { ICompany, ICompanySmall } from '@types';
+import { ICompanySmall } from '@types';
 import { GetServerSideProps, NextPage } from 'next';
-import axios from 'axios';
+import { getCompaniesByDay } from '@utils/api';
 
 interface HomeProps {
   todayOrders: ICompanySmall[];
@@ -24,12 +23,9 @@ const Home: NextPage<HomeProps> = ({ todayOrders }) => (
   </Container>
 );
 
-export const getServerSideProps: GetServerSideProps = async context => {
-  const { host } = context.req.headers;
-  const newHost = host?.includes('http') ? host : `http://${host}`;
-  const { data: todayOrders } = await axios.get(`${newHost}/api/today`);
-
-  const props = { ...todayOrders };
+export const getServerSideProps: GetServerSideProps = async () => {
+  const todayOrders = await getCompaniesByDay(new Date().getDay());
+  const props = { todayOrders };
 
   return { props };
 };

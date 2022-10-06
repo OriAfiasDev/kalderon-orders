@@ -7,6 +7,16 @@ export interface IProduct {
   product_price: number;
 }
 
+export interface IProductAPI {
+  current_quantity: number;
+  order_quantity: number;
+  product_id: string;
+  product_name: string;
+  product_price: number;
+  category_id: string;
+  company_id: string;
+}
+
 export interface ICategory {
   category_id: string;
   category_name: string;
@@ -35,4 +45,4 @@ export type ICompanySmall = {
   company_name: string;
   company_name_english: string;
   preferred_days: number[];
-}
+};
