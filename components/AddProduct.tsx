@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react';
-import { v4 as uuid } from 'uuid';
-import { Button, Container, Heading, Input, Select } from '@chakra-ui/react';
-import { supabase } from '@utils/supabaseClient';
+import { Button, Container, Heading, Input, Select, useToast } from '@chakra-ui/react';
 import { ICategory } from '@types';
 import { useRefresh } from './hooks/useRefresh';
+import { createProduct } from '@utils/api';
 
 interface AddProductProps {
   company_id: string;
@@ -15,25 +14,22 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categoriesMa
   const [productCategoryId, setProductCategoryId] = useState<string>('');
   const [productPrice, setProductPrice] = useState<number>(0);
   const refresh = useRefresh();
+  const toast = useToast();
 
   const handleAdd = useCallback(async () => {
-    const product = {
-      product_id: uuid(),
-      product_name: productName,
-      category_id: productCategoryId,
-      current_quantity: 0,
-      order_quantity: 0,
-      product_price: productPrice,
-      company_id: company_id,
-    };
+    const success = await createProduct(productName, productPrice, productCategoryId, company_id);
 
-    const { status } = await supabase.from('products').insert(product);
-    if (status < 300) {
-      setProductName('');
-      setProductPrice(0);
-      refresh();
-    }
-  }, [productCategoryId, productName, productPrice, company_id, refresh]);
+    toast({
+      title: success ? 'מוצר נוסף בהצלחה' : 'מוצר לא נוסף',
+      status: success ? 'success' : 'error',
+      isClosable: true,
+      duration: 9000,
+    });
+
+    setProductName('');
+    setProductPrice(0);
+    refresh();
+  }, [productCategoryId, productName, productPrice, company_id, refresh, toast]);
 
   return (
     <Container my='2' dir='rtl'>

@@ -1,4 +1,4 @@
-import { ICategory, ICompany, ICompanySmall, IContact, IProduct } from '@types';
+import { ICategory, ICompany, ICompanySmall, IContact, IProduct, IProductAPI } from '@types';
 import { convertDayToNum, hebToEnglish } from './conversions';
 import { supabase } from './supabaseClient';
 import { v4 as uuid } from 'uuid';
@@ -69,6 +69,32 @@ export const createContact = async (contact_name: string, contact_phone: string,
   try {
     const contact: IContact = { contact_name, contact_phone, contact_id: uuid(), company_id };
     const { status } = await supabase.from('contacts').insert(contact);
+    return status < 300;
+  } catch {
+    return false;
+  }
+};
+
+// Products
+
+export const createProduct = async (
+  product_name: string,
+  product_price: number,
+  category_id: string,
+  company_id: string
+): Promise<boolean> => {
+  if (!product_name || !product_price || !category_id || !company_id) return false;
+  try {
+    const product: IProductAPI = {
+      product_name,
+      product_price,
+      product_id: uuid(),
+      category_id,
+      company_id,
+      current_quantity: 0,
+      order_quantity: 0,
+    };
+    const { status } = await supabase.from('products').insert(product);
     return status < 300;
   } catch {
     return false;
