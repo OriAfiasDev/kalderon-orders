@@ -37,3 +37,12 @@ export const getCompanyByEnglishName = async (company_name_english: string): Pro
 
   return data;
 };
+
+export const getCompaniesByDay = async (day: number): Promise<ICompanySmall[]> => {
+  const { data } = await supabase
+    .from('companies')
+    .select('company_name, company_id, preferred_days, company_name_english')
+    .contains('preferred_days', [day]);
+
+  return data as ICompanySmall[];
+};
