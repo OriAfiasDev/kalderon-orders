@@ -1,4 +1,4 @@
-import { ICompany, ICompanySmall } from '@types';
+import { ICompany, ICompanySmall, IProduct } from '@types';
 import { convertDayToNum, hebToEnglish } from './conversions';
 import { supabase } from './supabaseClient';
 import { v4 as uuid } from 'uuid';
@@ -45,4 +45,19 @@ export const getCompaniesByDay = async (day: number): Promise<ICompanySmall[]> =
     .contains('preferred_days', [day]);
 
   return data as ICompanySmall[];
+};
+
+export const updateQuantities = async (products: IProduct[], type: 'order' | 'current' = 'current'): Promise<boolean> => {
+  if (!products.length) return false;
+
+  try {
+    const productsToUpdate = products.map(({ product_id, current_quantity, order_quantity }) =>
+      type === 'order' ? { product_id, order_quantity } : { product_id, current_quantity }
+    );
+
+    const { status, statusText } = await supabase.from('products').upsert(productsToUpdate, { onConflict: 'product_id' });
+    return status < 300;
+  } catch {
+    return false;
+  }
 };

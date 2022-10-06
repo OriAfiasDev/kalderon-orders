@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { Button, Center, Divider, Stack } from '@chakra-ui/react';
+import { Button, Center, Divider, Stack, Toast, useToast } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
 import { getWhatsappLink } from './utils';
+import { updateQuantities } from '@utils/api';
 
 interface TableActionsProps {
   updatedProducts: IProduct[];
@@ -13,31 +14,28 @@ interface TableActionsProps {
 export const TableActions: React.FC<TableActionsProps> = ({ updatedProducts, contact, setUpdatedProducts }) => {
   const canOrder = useMemo(() => updatedProducts.some(product => product.order_quantity > 0), [updatedProducts]);
   const canSave = useMemo(() => updatedProducts.some(product => product.current_quantity > 0), [updatedProducts]);
-  const [origin, setOrigin] = useState('');
+  const toast = useToast();
 
-  useEffect(() => {
-    setOrigin(window?.location.origin);
-  }, []);
+  const sendOrder = useCallback(async () => {
+    const success = await updateQuantities(updatedProducts, 'order');
+    if (!success) return toast({ title: 'לא הצלחנו לשמור את ההזמנה, אנא נסה שנית', status: 'error', duration: 9000, isClosable: true });
 
-  const updateQuantities = useCallback(
-    async (products: IProduct[], type: 'order' | 'current' = 'current') => {
-      await axios.post(`${origin}/api/products/quantities/${type}`, { products });
-    },
-    [origin]
-  );
-
-  const sendOrder = useCallback(() => {
-    updateQuantities(updatedProducts, 'order');
     window.open(getWhatsappLink(contact, updatedProducts), '_ blank');
-  }, [updatedProducts, contact, updateQuantities]);
+  }, [updatedProducts, contact, toast]);
 
   const clear = useCallback(
-    (key: 'current_quantity' | 'order_quantity') => {
+    async (key: 'current_quantity' | 'order_quantity') => {
       const clearedQuantities = updatedProducts.map(p => ({ ...p, [key]: 0 }));
       setUpdatedProducts(clearedQuantities);
-      updateQuantities(clearedQuantities, key === 'current_quantity' ? 'current' : 'order');
+      const success = await updateQuantities(clearedQuantities, key === 'current_quantity' ? 'current' : 'order');
+      toast({
+        title: success ? 'כמויות נוקו בהצלחה' : 'לא הצלחנו לנקות את הכמויות, אנא נסה שנית',
+        status: success ? 'success' : 'error',
+        duration: 9000,
+        isClosable: true,
+      });
     },
-    [updatedProducts, setUpdatedProducts, updateQuantities]
+    [updatedProducts, setUpdatedProducts, toast]
   );
 
   return (
