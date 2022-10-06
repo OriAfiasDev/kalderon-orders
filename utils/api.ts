@@ -1,4 +1,4 @@
-import { ICategory, ICompany, ICompanySmall, IProduct } from '@types';
+import { ICategory, ICompany, ICompanySmall, IContact, IProduct } from '@types';
 import { convertDayToNum, hebToEnglish } from './conversions';
 import { supabase } from './supabaseClient';
 import { v4 as uuid } from 'uuid';
@@ -49,13 +49,26 @@ export const getCompaniesByDay = async (day: number): Promise<ICompanySmall[]> =
   return data as ICompanySmall[];
 };
 
-//Categories
+// Categories
 
 export const createCategory = async (category_name: string, company_id: string): Promise<boolean> => {
-  if (!category_name) return false;
+  if (!category_name || !company_id) return false;
   try {
     const category: ICategory = { category_name, category_id: uuid(), company_id };
     const { status } = await supabase.from('categories').insert(category);
+    return status < 300;
+  } catch {
+    return false;
+  }
+};
+
+// Contacts
+
+export const createContact = async (contact_name: string, contact_phone: string, company_id: string): Promise<boolean> => {
+  if (!contact_name || !contact_phone || !company_id) return false;
+  try {
+    const contact: IContact = { contact_name, contact_phone, contact_id: uuid(), company_id };
+    const { status } = await supabase.from('contacts').insert(contact);
     return status < 300;
   } catch {
     return false;
