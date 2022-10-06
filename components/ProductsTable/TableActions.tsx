@@ -11,9 +11,12 @@ interface TableActionsProps {
 }
 
 export const TableActions: React.FC<TableActionsProps> = ({ updatedProducts, contact, setUpdatedProducts }) => {
+  const toast = useToast();
+
   const canOrder = useMemo(() => updatedProducts.some(product => product.order_quantity > 0), [updatedProducts]);
   const canSave = useMemo(() => updatedProducts.some(product => product.current_quantity > 0), [updatedProducts]);
-  const toast = useToast();
+  const canClearOrder = useMemo(() => updatedProducts.some(product => product.order_quantity > 0), [updatedProducts]);
+  const canClearInventory = useMemo(() => updatedProducts.some(product => product.current_quantity > 0), [updatedProducts]);
 
   const sendOrder = useCallback(async () => {
     const success = await updateQuantities(updatedProducts, 'order');
@@ -49,10 +52,10 @@ export const TableActions: React.FC<TableActionsProps> = ({ updatedProducts, con
         </Button>
       </Center>
       <Center>
-        <Button colorScheme='cyan' variant='ghost' size='sm' onClick={() => clear('current_quantity')} disabled={!canSave}>
+        <Button colorScheme='cyan' variant='ghost' size='sm' onClick={() => clear('current_quantity')} disabled={!canClearInventory}>
           אפס מלאי
         </Button>
-        <Button colorScheme='cyan' variant='ghost' size='sm' onClick={() => clear('order_quantity')} disabled={!canSave}>
+        <Button colorScheme='cyan' variant='ghost' size='sm' onClick={() => clear('order_quantity')} disabled={!canClearOrder}>
           אפס הזמנה
         </Button>
       </Center>
