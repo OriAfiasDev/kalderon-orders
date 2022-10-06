@@ -1,6 +1,12 @@
+import { ICompany, ICompanySmall } from '@types';
 import { supabase } from './supabaseClient';
 
-export const getCompanyByEnglishName = async (company_name_english: string) => {
+export const getCompanies = async (): Promise<ICompanySmall[]> => {
+  const { data } = await supabase.from('companies').select(`*`);
+  return data as ICompanySmall[];
+};
+
+export const getCompanyByEnglishName = async (company_name_english: string): Promise<ICompany> => {
   const { data } = await supabase
     .from('companies')
     .select(

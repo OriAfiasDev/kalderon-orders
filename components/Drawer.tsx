@@ -21,6 +21,7 @@ import { AddCompany } from './AddCompany';
 import axios from 'axios';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
+import { getCompanies } from '@utils/api';
 
 export const Drawer: React.FC = () => {
   const { toggleColorMode } = useColorMode();
@@ -31,10 +32,7 @@ export const Drawer: React.FC = () => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
-    (async () => {
-      const { data } = await axios.get(`${window.location.origin}/api/companies/`);
-      setCompanies(data);
-    })();
+    getCompanies().then(setCompanies);
   }, []);
 
   const filteredCompanies = useMemo(() => companies.filter(company => company.company_name.includes(search)), [companies, search]);
