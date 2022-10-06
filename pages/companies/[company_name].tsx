@@ -8,6 +8,7 @@ import axios from 'axios';
 import { AddContact } from '@components/AddContact';
 import { AddCategory } from '@components/AddCategory';
 import { arrayToMap } from '@utils/conversions';
+import { supabase } from '@utils/supabaseClient';
 
 const Company: React.FC<ICompany> = ({ products, categories, company_name, contacts, company_id }) => {
   const categoriesMap = useMemo(() => arrayToMap(categories, 'category_id'), [categories]);
@@ -51,10 +52,14 @@ const Company: React.FC<ICompany> = ({ products, categories, company_name, conta
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const company_name = context.params?.company_name as string;
-  const { host } = context.req.headers;
-  const newHost = host?.includes('http') ? host : `http://${host}`;
 
-  const { data: props } = await axios.get(`${newHost}/api/companies/${company_name}`);
+  const { data: props } = await supabase
+    .from('companies')
+    .select(
+      `*,products: products!company_id(product_id,product_name,product_price,order_quantity,current_quantity,category: category_id(*)),contacts: contacts!company_id(contact_id, contact_name, contact_phone), categories: categories!company_id(category_id, category_name)`
+    )
+    .match({ company_name_english: company_name })
+    .single();
 
   return { props };
 };
