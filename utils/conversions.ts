@@ -41,7 +41,7 @@ export const hebToEnglish = (heb: string) => {
 
   return heb
     .split('')
-    .map(letter => (letter in hebToEng ? hebToEng[letter] : ''))
+    .map(letter => (letter in hebToEng ? hebToEng[letter] : letter))
     .join('');
 };
 
