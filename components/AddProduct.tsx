@@ -12,12 +12,12 @@ interface AddProductProps {
 export const AddProduct: React.FC<AddProductProps> = ({ company_id, categoriesMap }) => {
   const [productName, setProductName] = useState<string>('');
   const [productCategoryId, setProductCategoryId] = useState<string>('');
-  const [productPrice, setProductPrice] = useState<number>(0);
+  const [productPrice, setProductPrice] = useState<string>('');
   const refresh = useRefresh();
   const toast = useToast();
 
   const handleAdd = useCallback(async () => {
-    const success = await createProduct(productName, productPrice, productCategoryId, company_id);
+    const success = await createProduct(productName, +productPrice, productCategoryId, company_id);
 
     toast({
       title: success ? 'מוצר נוסף בהצלחה' : 'מוצר לא נוסף',
@@ -27,14 +27,14 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categoriesMa
     });
 
     setProductName('');
-    setProductPrice(0);
+    setProductPrice('');
     refresh();
   }, [productCategoryId, productName, productPrice, company_id, refresh, toast]);
 
   return (
     <Container my='2' dir='rtl'>
       <Input mb='1' placeholder='שם מוצר' value={productName} onChange={e => setProductName(e.target.value)} />
-      <Input mb='1' placeholder='מחיר' value={productPrice} onChange={e => setProductPrice(Number(e.target.value))} />
+      <Input mb='1' placeholder='מחיר' type='number' value={productPrice} onChange={e => setProductPrice(e.target.value)} />
       <Select
         variant='flushed'
         mb='1'
