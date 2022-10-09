@@ -1,4 +1,4 @@
-import { Button, Container, Heading, Input, useToast } from '@chakra-ui/react';
+import { Button, Container, Input, useToast } from '@chakra-ui/react';
 import { createContact } from '@utils/api';
 import { useCallback, useState } from 'react';
 import { useRefresh } from './hooks/useRefresh';
@@ -30,9 +30,6 @@ export const AddContact: React.FC<AddContactProps> = ({ company_id }) => {
 
   return (
     <Container my='2' dir='rtl'>
-      <Heading fontSize='larger' mb='2'>
-        הוסף איש קשר
-      </Heading>
       <Input mb='1' placeholder='שם איש קשר' value={contactName} onChange={e => setContactName(e.target.value)} />
       <Input mb='1' placeholder='טלפון' value={contactPhone} onChange={e => setContactPhone(e.target.value)} />
 

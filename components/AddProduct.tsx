@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Button, Container, Heading, Input, Select, useToast } from '@chakra-ui/react';
+import { Button, Container, Input, Select, useToast } from '@chakra-ui/react';
 import { ICategory } from '@types';
 import { useRefresh } from './hooks/useRefresh';
 import { createProduct } from '@utils/api';
@@ -33,9 +33,6 @@ export const AddProduct: React.FC<AddProductProps> = ({ company_id, categoriesMa
 
   return (
     <Container my='2' dir='rtl'>
-      <Heading fontSize='larger' mb='2'>
-        הוסף פריט
-      </Heading>
       <Input mb='1' placeholder='שם מוצר' value={productName} onChange={e => setProductName(e.target.value)} />
       <Input mb='1' placeholder='מחיר' value={productPrice} onChange={e => setProductPrice(Number(e.target.value))} />
       <Select

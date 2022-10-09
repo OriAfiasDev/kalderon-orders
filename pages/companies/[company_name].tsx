@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Container, Divider, Heading, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { Box, Container, Divider, Heading, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import { ProductsTable } from '@components/ProductsTable';
 import { AddProduct } from '@components/AddProduct';
 import { ICompany } from '@types';
@@ -8,6 +8,7 @@ import { AddContact } from '@components/AddContact';
 import { AddCategory } from '@components/AddCategory';
 import { arrayToMap } from '@utils/conversions';
 import { getCompanyByEnglishName } from '@utils/api';
+import { Card } from '@components/Card';
 
 const Company: React.FC<ICompany> = ({ products, categories, company_name, contacts, company_id }) => {
   const categoriesMap = useMemo(() => arrayToMap(categories, 'category_id'), [categories]);
@@ -37,11 +38,15 @@ const Company: React.FC<ICompany> = ({ products, categories, company_name, conta
             ))}
           </TabPanel>
           <TabPanel>
-            <AddContact company_id={company_id} />
-            <Divider />
-            <AddCategory company_id={company_id} />
-            <Divider />
-            <AddProduct company_id={company_id} categoriesMap={categoriesMap} />
+            <Card borderColor='blue.500' title='הוסף איש קשר'>
+              <AddContact company_id={company_id} />
+            </Card>
+            <Card borderColor='orange.500' title='הוסף קטגוריה'>
+              <AddCategory company_id={company_id} />
+            </Card>
+            <Card borderColor='purple.500' title='הוסף פריט'>
+              <AddProduct company_id={company_id} categoriesMap={categoriesMap} />
+            </Card>
           </TabPanel>
         </TabPanels>
       </Tabs>
