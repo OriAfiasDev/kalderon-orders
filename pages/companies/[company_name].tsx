@@ -32,9 +32,9 @@ const Company: React.FC<ICompany> = ({ products, categories, company_name, conta
           </TabPanel>
           <TabPanel>
             {contacts.map(contact => (
-              <Text textAlign='center' fontSize='xl' key={contact.contact_id}>
-                סוכן: {contact.contact_name} - {contact.contact_phone}
-              </Text>
+              <Card isOpenDefault title={contact.contact_name} key={contact.contact_id}>
+                <Text fontSize='lg'>{contact.contact_phone}</Text>
+              </Card>
             ))}
           </TabPanel>
           <TabPanel>
