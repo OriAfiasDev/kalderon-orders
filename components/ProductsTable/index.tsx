@@ -1,10 +1,11 @@
-import React, { memo, useEffect, useState } from 'react';
-import { Table, TableContainer, Tbody, Td, Text, Thead, Tr } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Table, TableContainer, Tbody, Thead, Tr } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
 import { SortableTd } from './SortableTd';
 import { TableInput } from './TableInput';
 import { TableActions } from './TableActions';
 import { sortFunc } from './utils';
+import { Td } from './Td';
 
 interface ProductTableProps {
   products: IProduct[];

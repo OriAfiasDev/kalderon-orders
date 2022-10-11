@@ -27,7 +27,7 @@ const Company: React.FC<ICompany> = ({ products, categories, company_name, conta
           <Tab>עריכה</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
+          <TabPanel p='0'>
             <ProductsTable products={products} contact={contacts[0]} />
           </TabPanel>
           <TabPanel>
