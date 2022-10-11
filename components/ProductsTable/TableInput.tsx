@@ -1,8 +1,8 @@
 import { Input } from '@chakra-ui/react';
 
 interface TableInputProps {
-    value: number;
-    onChange: (value: number) => void;
+  value: number;
+  onChange: (value: number) => void;
 }
 
 export const TableInput: React.FC<TableInputProps> = ({ value, onChange, ...props }) => {
@@ -10,5 +10,5 @@ export const TableInput: React.FC<TableInputProps> = ({ value, onChange, ...prop
     onChange(Number(e.target.value));
   };
 
-  return <Input size='sm' width='10' variant='flushed' type='number' focusBorderColor='cyan.500' value={value} onChange={handleChange} />;
+  return <Input size='sm' variant='filled' width='12' height='6' textAlign='right' type='number' value={value} onChange={handleChange} />;
 };

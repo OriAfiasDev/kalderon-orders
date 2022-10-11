@@ -1,10 +1,11 @@
-import React, { memo, useEffect, useState } from 'react';
-import { Table, TableContainer, Tbody, Td, Thead, Tr } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Table, TableContainer, Tbody, Thead, Tr } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
 import { SortableTd } from './SortableTd';
 import { TableInput } from './TableInput';
 import { TableActions } from './TableActions';
 import { sortFunc } from './utils';
+import { Td } from './Td';
 
 interface ProductTableProps {
   products: IProduct[];
@@ -27,9 +28,9 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }
 
   return (
     <>
-      <TableContainer>
+      <TableContainer overflowY='auto' maxHeight='60vh'>
         <Table dir='rtl' align='center' justifyContent='center' size='sm'>
-          <Thead>
+          <Thead position='sticky' top={0}>
             <Tr>
               <SortableTd isActiveSort={sortKey === 'category'} setActiveSort={() => setSortKey('category')}>
                 קטגוריה

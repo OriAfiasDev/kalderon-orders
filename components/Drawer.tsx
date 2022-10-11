@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Button,
   Divider,
@@ -9,7 +9,6 @@ import {
   Flex,
   Input,
   List,
-  ListItem,
   Switch,
   useColorMode,
   useDisclosure,
@@ -19,15 +18,14 @@ import NextLink from 'next/link';
 import { ICompanySmall } from '@types';
 import { AddCompany } from './AddCompany';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import { useRouter } from 'next/router';
 import { getCompanies } from '@utils/api';
+import { NavItem } from './NavItem';
 
 export const Drawer: React.FC = () => {
   const { toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = React.useState('');
   const [companies, setCompanies] = useState<ICompanySmall[]>([]);
-  const router = useRouter();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
@@ -35,14 +33,6 @@ export const Drawer: React.FC = () => {
   }, []);
 
   const filteredCompanies = useMemo(() => companies.filter(company => company.company_name.includes(search)), [companies, search]);
-
-  const onCompanyClicked = useCallback(
-    (route: string) => {
-      router.push(route);
-      onClose();
-    },
-    [onClose, router]
-  );
 
   return (
     <>
@@ -60,12 +50,10 @@ export const Drawer: React.FC = () => {
                 דף הבית
               </Button>
             </NextLink>
-            <Input placeholder='חפש חברה' mb='2' value={search} onChange={e => setSearch(e.target.value)} size='sm' />
-            <List spacing={3}>
+            <Input placeholder='חפש חברה' my='2' value={search} onChange={e => setSearch(e.target.value)} size='sm' />
+            <List spacing={3} maxH='300px'>
               {filteredCompanies.map(company => (
-                <ListItem key={company.company_id}>
-                  <div onClick={() => onCompanyClicked(`/companies/${company.company_name_english}`)}>{company.company_name}</div>
-                </ListItem>
+                <NavItem key={company.company_id} href={`/companies/${company.company_name_english}`} text={company.company_name} />
               ))}
             </List>
           </DrawerBody>

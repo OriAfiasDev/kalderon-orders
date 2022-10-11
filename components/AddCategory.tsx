@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Button, Container, Heading, Input, useToast } from '@chakra-ui/react';
+import { Button, Container, Input, useToast } from '@chakra-ui/react';
 import { createCategory } from '@utils/api';
 
 interface AddCategoryProps {
@@ -24,9 +24,6 @@ export const AddCategory: React.FC<AddCategoryProps> = ({ company_id }) => {
 
   return (
     <Container my='2' dir='rtl'>
-      <Heading fontSize='larger' mb='2'>
-        הוסף קטגוריה
-      </Heading>
       <Input mb='1' placeholder='שם קטגוריה' value={categoryName} onChange={e => setCategoryName(e.target.value)} />
 
       <Button onClick={handleAdd} w='100%' colorScheme='green'>
