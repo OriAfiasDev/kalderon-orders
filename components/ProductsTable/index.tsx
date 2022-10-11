@@ -50,16 +50,8 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }
               .sort((a, b) => sortFunc(a, b, sortKey))
               .map(product => (
                 <Tr key={product.product_id}>
-                  <Td maxWidth={['60px', 'unset']} overflow='hidden' title={product.category.category_name}>
-                    <Text textOverflow='ellipsis' overflow='hidden'>
-                      {product.category.category_name}
-                    </Text>
-                  </Td>
-                  <Td maxWidth={['60px', 'unset']} overflow='hidden' title={product.product_name}>
-                    <Text textOverflow='ellipsis' overflow='hidden'>
-                      {product.product_name}
-                    </Text>
-                  </Td>
+                  <Td>{product.category.category_name}</Td>
+                  <Td>{product.product_name}</Td>
                   <Td>
                     <TableInput
                       value={product.current_quantity}
