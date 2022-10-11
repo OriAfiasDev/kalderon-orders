@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Table, TableContainer, Tbody, Td, Thead, Tr } from '@chakra-ui/react';
+import { Table, TableContainer, Tbody, Td, Text, Thead, Tr } from '@chakra-ui/react';
 import { IContact, IProduct } from '@types';
 import { SortableTd } from './SortableTd';
 import { TableInput } from './TableInput';
@@ -27,9 +27,9 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }
 
   return (
     <>
-      <TableContainer>
+      <TableContainer overflowY='auto' maxHeight='60vh'>
         <Table dir='rtl' align='center' justifyContent='center' size='sm'>
-          <Thead>
+          <Thead position='sticky' top={0}>
             <Tr>
               <SortableTd isActiveSort={sortKey === 'category'} setActiveSort={() => setSortKey('category')}>
                 קטגוריה
@@ -50,8 +50,16 @@ export const ProductsTable: React.FC<ProductTableProps> = ({ products, contact }
               .sort((a, b) => sortFunc(a, b, sortKey))
               .map(product => (
                 <Tr key={product.product_id}>
-                  <Td>{product.category.category_name}</Td>
-                  <Td>{product.product_name}</Td>
+                  <Td maxWidth={['60px', 'unset']} overflow='hidden' title={product.category.category_name}>
+                    <Text textOverflow='ellipsis' overflow='hidden'>
+                      {product.category.category_name}
+                    </Text>
+                  </Td>
+                  <Td maxWidth={['60px', 'unset']} overflow='hidden' title={product.product_name}>
+                    <Text textOverflow='ellipsis' overflow='hidden'>
+                      {product.product_name}
+                    </Text>
+                  </Td>
                   <Td>
                     <TableInput
                       value={product.current_quantity}
